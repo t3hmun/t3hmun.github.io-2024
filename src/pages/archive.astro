@@ -1,0 +1,61 @@
+---
+import { getCollection } from "astro:content";
+import ArchiveLink from "../components/ArchiveLink.astro";
+import Layout from "../layouts/Layout.astro";
+
+const showDraftsInDev = true;
+const isDev = import.meta.env.DEV;
+
+const allPosts = (await getCollection("posts"))
+    .filter((p) => isDev || !p.id.startsWith("test/"))
+    .filter((p) => (isDev && showDraftsInDev) || !p.data.draft);
+
+const years = [
+    ...new Set(allPosts.map((p) => new Date(p.data.timestamp).getFullYear())),
+].sort();
+years.reverse();
+
+const byYear = years.map((y) => ({
+    year: y,
+    posts: allPosts
+        .filter((p) => new Date(p.data.timestamp).getFullYear() === y)
+        .sort(
+            (a, b) =>
+                new Date(b.data.timestamp).getTime() -
+                new Date(a.data.timestamp).getTime()
+        ),
+}));
+---
+
+<Layout title="Archive">
+    <main class="container mx-auto pr-2 pl-2">
+        <h1
+            class="pt-2 pb-8 text-center text-5xl font-semibold dark:text-amber-500"
+        >
+            Archive
+        </h1>
+        <ul class="mx-auto max-w-3xl">
+            {
+                byYear.map((y) => (
+                    <li id={`${y.year}`}>
+                        <h2 class="mb-6 text-4xl font-semibold dark:text-amber-400">
+                            {y.year}
+                        </h2>
+                        <ul class="mb-6">
+                            {y.posts.map((p) => (
+                                <li class="mb-2  bg-stone-200 p-2 dark:bg-stone-800">
+                                    <ArchiveLink
+                                        timestamp={p.data.timestamp}
+                                        title={p.data.title}
+                                        description={p.data.description}
+                                        url={`/posts/${p.slug}`}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                    </li>
+                ))
+            }
+        </ul>
+    </main>
+</Layout>

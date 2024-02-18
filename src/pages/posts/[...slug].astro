@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import P from "../../components/posts/P.astro";
+import H2 from "../../components/posts/H2.astro";
+import H3 from "../../components/posts/H3.astro";
+import H4 from "../../components/posts/H4.astro";
+import H5 from "../../components/posts/H5.astro";
+import H6 from "../../components/posts/H6.astro";
+import Ul from "../../components/posts/Ul.astro";
+import Ol from "../../components/posts/Ol.astro";
+import Li from "../../components/posts/Li.astro";
+import Blockquote from "../../components/posts/Blockquote.astro";
+import A from "../../components/posts/A.astro";
+import Em from "../../components/posts/Em.astro";
+import Strong from "../../components/posts/Strong.astro";
+import Table from "../../components/posts/Table.astro";
+import Td from "../../components/posts/Td.astro";
+import Code from "../../components/posts/Code.astro";
+import Pre from "../../components/posts/Pre.astro";
+import { CodePre } from "../../components/posts/CodePre";
+
+export async function getStaticPaths() {
+    const blogEntries = await getCollection("posts");
+    return blogEntries.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+export const mdxTheme = {
+    a: A,
+    blockquote: Blockquote,
+    code: Code,
+    em: Em,
+    h2: H2,
+    h3: H3,
+    h4: H4,
+    h5: H5,
+    h6: H6,
+    li: Li,
+    ol: Ol,
+    p: P,
+    strong: Strong,
+    table: Table,
+    td: Td,
+    ul: Ul,
+    pre: Pre,
+};
+
+const { entry } = Astro.props;
+const { Content, components } = await entry.render();
+---
+
+<Layout title={entry.data.title}>
+    <article
+        class="[&>aside]:mx-auto [&>aside]:max-w-3xl [&>aside]:border-l-2 [&>aside]:border-amber-600 [&>aside]:pl-2"
+    >
+        <h1
+            class="my-8 mx-auto max-w-3xl text-center text-5xl font-semibold dark:text-amber-500"
+        >
+            {entry.data.title}
+        </h1>
+        <Content components={{ ...mdxTheme, ...components }} />
+    </article>
+</Layout>

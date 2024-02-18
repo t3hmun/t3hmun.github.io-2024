@@ -1,0 +1,16 @@
+---
+/** Wrapper around CodePre to client:load it, SSG as a no-static element, hydrating adds interactive features.
+ *  This would add a tiny bit of visual jank on load but code is usually loaded low on the page.
+ */
+
+import { CodePre } from "./CodePre";
+const props = Astro.props;
+export interface Props {
+    "data-lang": string;
+    "data-theme": string;
+    "data-title": string;
+    class: string;
+}
+---
+
+<CodePre {...props} client:load><slot /></CodePre>

@@ -1,0 +1,10 @@
+---
+const props = Astro.props;
+---
+
+<!-- The _ in pre_code is tailwind's equivalent of a space, to make the decendant selector syntax. -->
+<code
+    {...props}
+    class="font-mono [&:not(pre_code)]:rounded-lg [&:not(pre_code)]:bg-stone-200 [&:not(pre_code)]:pt-0.5 [&:not(pre_code)]:pb-0.5 [&:not(pre_code)]:pl-1 [&:not(pre_code)]:pr-1 dark:[&:not(pre_code)]:bg-stone-800"
+    ><slot /></code
+>

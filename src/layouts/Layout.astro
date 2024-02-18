@@ -1,0 +1,98 @@
+---
+import HeaderLink from "../components/HeaderLink.astro";
+import { ThemeSwitcher } from "../components/ThemeSwitcher";
+import { SITE_TITLE } from "../config";
+import "../style/style.css";
+
+export interface Props {
+  title?: string;
+  home?: boolean;
+  frontmatter?: Frontmatter;
+}
+
+type Frontmatter = Omit<Props, "frontmatter">;
+
+const frontmatter = Astro.props.frontmatter;
+const title = Astro.props?.title ?? frontmatter?.title;
+const home = Astro.props.home;
+
+const isDev = import.meta.env.DEV;
+const vars = isDev
+  ? `${JSON.stringify({ title, home, props: Astro.props }, null, 4)}`
+  : "";
+const today = new Date();
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <script is:inline src="/theme.js"></script>
+  </head>
+  <body
+    class="bg-stone-100 px-1 text-stone-900 dark:bg-stone-850 dark:text-stone-150"
+  >
+    <header
+      class="mb-4 bg-stone-200 py-2 text-stone-900 dark:bg-stone-800 dark:text-stone-100"
+    >
+      <div
+        class={`${
+          home ? "text-4xl" : "text-2xl"
+        } mb-2 text-center font-semibold text-amber-700 dark:text-amber-300`}
+      >
+        <a class="" href="/">{SITE_TITLE}</a>
+      </div>
+      <nav>
+        <ul class="flex-column items-middle flex flex-wrap justify-center">
+          <li class="mx-3">
+            <HeaderLink href="/">Home</HeaderLink>
+          </li>
+          <li class="mx-3">
+            <HeaderLink href="/archive">Archive</HeaderLink>
+          </li>
+          <li class="mx-3">
+            <HeaderLink href="https://github.com/t3hmun" target="_blank">
+              GitHub
+            </HeaderLink>
+          </li>
+          <li class="mx-3">
+            <ThemeSwitcher client:load />
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <slot />
+    <!-- {
+            isDev && (
+                <section>
+                    <pre>{vars}</pre>
+                </section>
+            )
+        } -->
+    <footer
+      class="mt-20 flex flex-col bg-stone-200 py-8 text-stone-900 dark:bg-stone-800 dark:text-stone-100"
+    >
+      <div class="mx-auto">
+        <span class="mr-4 text-amber-900 dark:text-amber-100"
+          >&copy; {today.getFullYear()} t3hmun
+        </span>
+        <a
+          class="text-amber-800 hover:text-amber-500 dark:text-amber-200 dark:hover:text-amber-500"
+          href="#"
+          ><span class="px-2">↑</span><span class="px-2">↑</span>
+        </a>
+        <span class="ml-4">
+          <a
+            class="text-amber-800 hover:text-amber-500 dark:text-amber-200 dark:hover:text-amber-500"
+            href="https://creativecommons.org/licenses/by-sa/4.0/"
+            >CC-BY-SA-4.0</a
+          >
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
