@@ -1,0 +1,13 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[html][js][css][ts][jsx][tsx]": {
+    // VSCode's default tab size does not match prettier.
+    "editor.tabSize": 2
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false,
+    "editor.tabSize": 2
+  }
+}
