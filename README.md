@@ -26,7 +26,7 @@ Fun wins
 
 - [x] Choose npm
   - I don't like yarn anymore, pnpm complicates things, nx is more than just complicated, npm is fine, it is simple
-  - Using Node 20, the actual version is unlikely to matter
+  - Using Node 20, Astro needs 18+, this is fine
 
 - [x] Configure vscode
   - [x] Prettier
