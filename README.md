@@ -29,9 +29,10 @@ Fun wins
   - Using Node 20, the actual version is unlikely to matter
 
 - [x] Configure vscode
-
-  - [ ] Prettier
-  - [ ] Format on save - but not for markdown
+  - [x] Prettier
+  - [x] Format on save 
+    - But not for markdown, prettier makes a mess of it
+    - Markdown is meant to be manually fudged to improve readability.
 
 - [ ] Style
   - [ ] Install Tailwind
